@@ -12,16 +12,17 @@ import './index.css';
 
 
 // remove props
-function Square(props) {
-  return (
-      <button 
-          className="square" 
-          onClick={props.onClick}
-      >   
-      {props.value}
-      </button>
-  );
-}
+// remove altogether: just place functionality elsewhere in useEffect body
+// function Square(props) {
+//   return (
+//       <button 
+//           className="square" 
+//           onClick={props.onClick}
+//       >   
+//       {props.value}
+//       </button>
+//   );
+// }
 
 class Board extends React.Component {
   // note: change to useEffect
@@ -62,25 +63,33 @@ class Board extends React.Component {
 
 function Game (){
   // Game state hooks
-  const [squares, setSquare] = useState(Array(9).fill(null));
-  const [history, setHistory] = useState(squares);
-  const [xIsNext, setNext] = useState(true);
-  const [stepNumber, setStepNumber] = useState(0);
+  const [squares, setSquare] = useState(Array(9).fill(null)); // init as empty
+  const [history, setHistory] = useState(squares);            // history is squares, updated each render
+  const [currentState, setCurrentState] = useState(history[history.length-1]);
+  const [xIsNext, setXIsNext] = useState(true);               // bool switched on each render
+  const [stepNumber, setStepNumber] = useState(0);            // stepNumber incremented on each render
 
-  
-  // on each render
+  // on each render: onClick should be encompassed here
   useEffect(() => {
-    setHistory(history.concat([{squares: squares}]))
+
+    setHistory(history.concat([{squares: squares}]));
+    setXIsNext( xIsNext ? false : true);
+    setStepNumber(stepNumber+1);
+
   });
   
   return (
     <div className="game">
-      <div className="game-board">
-        <Board 
-          //note: place state hook functions here 
-          squares={currentState.squares}
-          onClick={(i) => this.handleClick(i)}
-        />
+      <div className="game-board"> 
+        <button 
+            clsasName="square"
+            onClick={(i) => (
+              setHistory(history.slice(0, stepNumber+1));
+              setCurrentState(history[history.length-1]);
+              setSquare(squares[i] = xIsNext ? 'X' : 'O'); //NOTE: may be other way around ...
+          )}>
+            {squares[i]}
+        </button>
       </div>
       <div className="game-info">
       <div>{gameStatus}</div>
