@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
@@ -11,6 +11,7 @@ import './index.css';
 //        Square: renders Square
 
 
+// remove props
 function Square(props) {
   return (
       <button 
@@ -23,6 +24,7 @@ function Square(props) {
 }
 
 class Board extends React.Component {
+  // note: change to useEffect
   renderSquare(i) {
     return (
         <Square 
@@ -31,6 +33,7 @@ class Board extends React.Component {
         />
     );
   }
+  // note: useEffect
   render() {
     // winner tracking and game state lifted up to Game obj
     // square rendering stil here
@@ -55,9 +58,49 @@ class Board extends React.Component {
     );
   }
 }
+ 
+
+function Game (){
+  // Game state hooks
+  const [squares, setSquare] = useState(Array(9).fill(null));
+  const [history, setHistory] = useState(squares);
+  const [xIsNext, setNext] = useState(true);
+  const [stepNumber, setStepNumber] = useState(0);
+
   
+  // on each render
+  useEffect(() => {
+    setHistory(history.concat([{squares: squares}]))
+  });
+  
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board 
+          //note: place state hook functions here 
+          squares={currentState.squares}
+          onClick={(i) => this.handleClick(i)}
+        />
+      </div>
+      <div className="game-info">
+      <div>{gameStatus}</div>
+      <ol>{moves}</ol>
+      </div>
+    </div>
+  );
+}
+
+
 // game state (and there4 what to render) encapsulated in Game obj
-class Game extends React.Component {
+class GameClass extends React.Component {
+  // note: multiple useStates
+  // note:
+  // useState for:  
+  // - history
+  // - squares
+  // - xIsNext
+  // - stepNumber
+
   constructor(props){
     super(props);
     this.state = {
@@ -69,12 +112,15 @@ class Game extends React.Component {
     };
   }
   // updates gamestate after square is clicked
-  // game states are discretized via valid clicks
+  // game states are discretized via valid clicks 
   handleClick(i){
     // design decision: history is only up until this step: discards future history
     //  if gone back to a certain move and made a move from there
+    // note: setHistory here
     const gameHistory = this.state.history.slice(0, this.state.stepNumber + 1);
+    // note: setCurrentState here
     const current_state = gameHistory[gameHistory.length-1];
+    // note: setSquares here
     const squares = current_state.squares.slice();
     // if winner or square already filled
     if (calculateWinner(squares) || squares[i]){
@@ -89,7 +135,9 @@ class Game extends React.Component {
       history: gameHistory.concat([{
         squares: squares,
       }]),
+      // note: setXIsNext
       xIsNext: !this.state.xIsNext,
+      // note: setStepNumber
       stepNumber: gameHistory.length,
     });
   }
@@ -102,6 +150,7 @@ class Game extends React.Component {
     })
   }
 
+  // note: useEffect
   render() {
     const gameHistory = this.state.history; 
     const currentState = gameHistory[this.state.stepNumber]; 
@@ -128,10 +177,12 @@ class Game extends React.Component {
     }
 
     // renders board, passes onClick 
+    // note: onEffect
     return (
       <div className="game">
         <div className="game-board">
         <Board 
+          //note: place state hook functions here 
           squares={currentState.squares}
           onClick={(i) => this.handleClick(i)}
         />
