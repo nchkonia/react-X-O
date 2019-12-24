@@ -73,10 +73,9 @@ function Game (){
 
   // on each render: onClick should be encompassed here
   useEffect(() => {
-
     setHistory(history.concat([{squares: squares}]));
     setCurrentState(squares)
-    setXIsNext(xIsNext ? false : true);
+    setXIsNext(xIsNext ? true : false);
     setStepNumber(stepNumber+1);
     // setMoves(gameHistory.map());
     const winner = calculateWinner(squares);
