@@ -59,7 +59,29 @@ import './index.css';
 //     );
 //   }
 // }
- 
+
+// renders all squares
+function Board(squares){
+  return (
+    <div>
+        <div className="board-row">
+        {squares[0]}
+        {squares[1]}
+        {squares[2]}
+        </div>
+        <div className="board-row">
+        {squares[3]}
+        {squares[4]}
+        {squares[5]}
+        </div>
+        <div className="board-row">
+        {squares[6]}
+        {squares[7]}
+        {squares[8]}
+        </div>
+    </div>
+  );
+}
 
 function Game (){
   // Game state hooks
@@ -74,12 +96,11 @@ function Game (){
   // on each render: onClick should be encompassed here
   useEffect(() => {
     setHistory(history.concat([{squares: squares}]));
-    setCurrentState(squares)
+    setCurrentState(squares);
     setXIsNext(xIsNext ? true : false);
     setStepNumber(stepNumber+1);
     // setMoves(gameHistory.map());
     const winner = calculateWinner(squares);
-
     if (winner){
       setGameStatus('Winner: ' + winner);
     }
@@ -91,18 +112,23 @@ function Game (){
   return (
     <div className="game">
       <div className="game-board"> 
-        <button 
+        <Board
+          squares = {squares}>
+
+        </Board>
+        {/* <button 
             className="square"
             onClick={(i) => {
-              setHistory(history.slice(0, stepNumber+1));
-              setCurrentState(history[history.length-1]);
+              // setHistory(history.slice(0, stepNumber+1));
+              // setCurrentState(history[history.length-1]);
               setSquare(squares[i] = xIsNext ? 'X' : 'O'); //NOTE: may be other way around ...
+              setXIsNext(false);
               }
             }
               // ;
           >
             {squares}
-        </button>
+        </button> */}
       </div>
       <div className="game-info">
       <div>{gameStatus}</div>
