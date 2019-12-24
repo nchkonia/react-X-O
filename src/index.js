@@ -93,12 +93,14 @@ function Game (){
       <div className="game-board"> 
         <button 
             className="square"
-            // onClick={() => (
-            //   setHistory(history.slice(0, stepNumber+1));
-            //   setCurrentState(history[history.length-1]);
-            //   setSquare(squares[i] = xIsNext ? 'X' : 'O'); //NOTE: may be other way around ...
-            // )}
-            >
+            onClick={(i) => {
+              setHistory(history.slice(0, stepNumber+1));
+              setCurrentState(history[history.length-1]);
+              setSquare(squares[i] = xIsNext ? 'X' : 'O'); //NOTE: may be other way around ...
+              }
+            }
+              // ;
+          >
             {squares}
         </button>
       </div>
