@@ -30,15 +30,19 @@ function Game (){
     return (
       <Square 
         value={squares[i]} 
-        // drier of state change
+
+        // driver of state change
         onClick={() => {
+          if (calculateWinner(squares) || squares[i]){
+            return
+          }
           const newSquares = squares.slice();
           newSquares[i] = xIsNext ? 'X' : 'O'; //NOTE: may be other way around ...; // hard-coded for now
           setSquares(newSquares);
           setHistory(history.slice(0, stepNumber+1));
           setCurrentState(history[history.length-1]);
           setXIsNext(xIsNext? false : true);
-
+          
           const winner = calculateWinner(newSquares);
           if (winner){
             setGameStatus('Winner: ' + winner)
