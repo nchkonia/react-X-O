@@ -2,13 +2,10 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-// Obj structure:
-//        Game: winner tracking, history, current player tracking, handling square clicks
+// Functional Component structure:
+//        Game: winner tracking, history, current player tracking, handling square clicks,
 //          |  
-//        Board: defines square, passes state change to Square after onClick       
-//          |
-//          |(a function, not Obj)
-//        Square: renders Square
+//        Square: stores value and onClick function passed in from Game
 
 
 // stateless square component
@@ -36,13 +33,20 @@ function Game (){
           if (calculateWinner(squares) || squares[i]){
             return
           }
+
           const newSquares = squares.slice();
-          newSquares[i] = xIsNext ? 'X' : 'O'; //NOTE: may be other way around ...; // hard-coded for now
+          newSquares[i] = xIsNext ? 'X' : 'O'; 
           setSquares(newSquares);
           setHistory(history.slice(0, stepNumber+1));
           setCurrentState(history[history.length-1]);
           setXIsNext(xIsNext? false : true);
-          
+
+          // update history states
+          setHistory(history.slice(0, stepNumber+1));
+          setCurrentState(history[history.length-1]);
+          setStepNumber(history.length);
+          setMoves();
+
           const winner = calculateWinner(newSquares);
           if (winner){
             setGameStatus('Winner: ' + winner)
@@ -57,28 +61,15 @@ function Game (){
 
   // Game state hooks
   const [squares, setSquares] = useState(Array(9).fill(null)); // init as empty
-  const [history, setHistory] = useState(squares);            // history is squares, updated each render
-  const [currentState, setCurrentState] = useState(history[history.length-1]);
   const [xIsNext, setXIsNext] = useState(true);               // bool switched on each render
   const [stepNumber, setStepNumber] = useState(0);            // stepNumber incremented on each render
+
+  // history tracking
+  const [history, setHistory] = useState(squares);            // history is squares, updated each render
+  const [currentState, setCurrentState] = useState(history[history.length-1]);
   const [gameStatus, setGameStatus] = useState('Next Player: X')           // recalculated on every render
   const [moves, setMoves] = useState();                       // renders moves in history
 
-  // on each render: onClick should be encompassed here
-  // useEffect(() => {
-  //   setHistory(history.concat([{squares: squares}]));
-  //   setCurrentState(squares);
-  //   setXIsNext(xIsNext ? true : false);
-  //   setStepNumber(stepNumber+1);
-  //   // setMoves(gameHistory.map());
-  //   const winner = calculateWinner(squares);
-  //   if (winner){
-  //     setGameStatus('Winner: ' + winner);
-  //   }
-  //   else{
-  //     setGameStatus('Next player: ' + (xIsNext ? 'X' : 'O'));
-  //   }
-  // });
   
   // master render
   return (
@@ -105,10 +96,7 @@ function Game (){
         {/* <button 
             className="square"
             onClick={(i) => {
-              // setHistory(history.slice(0, stepNumber+1));
-              // setCurrentState(history[history.length-1]);
-              setSquare(squares[i] = xIsNext ? 'X' : 'O'); //NOTE: may be other way around ...
-              setXIsNext(false);
+      
               }
             }
               // ;
