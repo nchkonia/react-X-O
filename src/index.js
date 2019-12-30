@@ -37,15 +37,12 @@ function Game (){
           const newSquares = squares.slice();
           newSquares[i] = xIsNext ? 'X' : 'O'; 
           setSquares(newSquares);
-          setHistory(history.slice(0, stepNumber+1));
-          setCurrentState(history[history.length-1]);
           setXIsNext(xIsNext? false : true);
 
           // update history states
           setHistory(history.slice(0, stepNumber+1));
           setCurrentState(history[history.length-1]);
           setStepNumber(history.length);
-          setMoves();
 
           const winner = calculateWinner(newSquares);
           if (winner){
@@ -66,10 +63,26 @@ function Game (){
 
   // history tracking
   const [history, setHistory] = useState(squares);            // history is squares, updated each render
-  const [currentState, setCurrentState] = useState(history[history.length-1]);
+  const [currentState, setCurrentState] = useState(stepNumber);
   const [gameStatus, setGameStatus] = useState('Next Player: X')           // recalculated on every render
-  const [moves, setMoves] = useState();                       // renders moves in history
+  // const [moves, setMoves] = useState();                       // renders moves in history
 
+
+  const jumpTo = (step) => {
+    setStepNumber(step);
+    setStepNumber(step % 2 === 0); // x is next on even turns
+  }
+
+  const moves = history.map((step, move) => {
+    const desc = move ? 
+      'Move #: ' + move : 'Game start';
+    // jump to (re-render) each move on click, each move stored in ordered list
+    return (
+      <li key={move}>
+        <button onClick = {() => jumpTo(move)}>{desc}</button>;
+      </li>
+    ); 
+  });
   
   // master render
   return (
