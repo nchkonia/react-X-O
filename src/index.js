@@ -23,15 +23,20 @@ function Square({value, onClick}) {
   );
 }
 
-
+// main driver
 function Game (){
+  // also updates square state info
   const renderSquare = (i) => {
-  return (
-    <Square 
-      value={squares[i]} 
-      onClick={() => console.log(i)}
-    />
-  );
+    return (
+      <Square 
+        value={squares[i]} 
+        onClick={() => {
+          let newSquares = squares.slice();
+          newSquares[i] = 'X'; // hard-coded for now
+          setSquares(newSquares);
+        }}
+      />
+    );
 }
 
   // Game state hooks
@@ -59,26 +64,28 @@ function Game (){
   //   }
   // });
   
+  // master render
   return (
     <div className="game">
       <div className="game-board"> 
-      <div>
-        <div className="board-row">
-          {renderSquare(0)}
-          {renderSquare(1)}
-          {renderSquare(2)}
+        <div>
+          <div className="board-row">
+            {renderSquare(0)}
+            {renderSquare(1)}
+            {renderSquare(2)}
+          </div>
+          <div className="board-row">
+            {renderSquare(3)}
+            {renderSquare(4)}
+            {renderSquare(5)}
+          </div>
+          <div className="board-row">
+            {renderSquare(6)}
+            {renderSquare(7)}
+            {renderSquare(8)}
+          </div>
         </div>
-        <div className="board-row">
-          {renderSquare(3)}
-          {renderSquare(4)}
-          {renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {renderSquare(6)}
-          {renderSquare(7)}
-          {renderSquare(8)}
-        </div>
-    </div>
+        
         {/* <button 
             className="square"
             onClick={(i) => {
@@ -94,8 +101,8 @@ function Game (){
         </button> */}
       </div>
       <div className="game-info">
-      <div>{gameStatus}</div>
-      <ol>{moves}</ol>
+        <div>{gameStatus}</div>
+        <ol>{moves}</ol>
       </div>
     </div>
   );
