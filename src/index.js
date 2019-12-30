@@ -11,81 +11,54 @@ import './index.css';
 //        Square: renders Square
 
 
-// remove props
-// remove altogether: just place functionality elsewhere in useEffect body
-// function Square(props) {
-//   return (
-//       <button 
-//           className="square" 
-//           onClick={props.onClick}
-//       >   
-//       {props.value}
-//       </button>
-//   );
-// }
-
-// class Board extends React.Component {
-//   // note: change to useEffect
-//   renderSquare(i) {
-//     return (
-//         <Square 
-//             value={this.props.squares[i]} 
-//             onClick={() => this.props.onClick(i)}
-//         />
-//     );
-//   }
-//   // note: useEffect
-//   render() {
-//     // winner tracking and game state lifted up to Game obj
-//     // square rendering stil here
-//     return (
-//         <div>
-//             <div className="board-row">
-//             {this.renderSquare(0)}
-//             {this.renderSquare(1)}
-//             {this.renderSquare(2)}
-//             </div>
-//             <div className="board-row">
-//             {this.renderSquare(3)}
-//             {this.renderSquare(4)}
-//             {this.renderSquare(5)}
-//             </div>
-//             <div className="board-row">
-//             {this.renderSquare(6)}
-//             {this.renderSquare(7)}
-//             {this.renderSquare(8)}
-//             </div>
-//         </div>
-//     );
-//   }
-// }
-
-// renders all squares
-function Board(squares){
+// stateless square component
+function Square({value, onClick}) {
   return (
+      <button 
+          className="square" 
+          onClick={onClick}
+      >   
+        {value}
+      </button>
+  );
+}
+
+// encapsulates squares
+const Board = ({squares}) => {
+  return(
     <div>
-        <div className="board-row">
-        {squares[0]}
-        {squares[1]}
-        {squares[2]}
-        </div>
-        <div className="board-row">
-        {squares[3]}
-        {squares[4]}
-        {squares[5]}
-        </div>
-        <div className="board-row">
-        {squares[6]}
-        {squares[7]}
-        {squares[8]}
-        </div>
+      <div className="board-row">
+        {renderSquare(0)}
+        {renderSquare(1)}
+        {renderSquare(2)}
+      </div>
+      <div className="board-row">
+        {renderSquare(3)}
+        {renderSquare(4)}
+        {renderSquare(5)}
+      </div>
+      <div className="board-row">
+        {renderSquare(6)}
+        {renderSquare(7)}
+        {renderSquare(8)}
+      </div>
     </div>
+    
+  )
+}
+
+const renderSquare = (i) => {
+  return (
+    <Square 
+      value={i} 
+      onClick={() => console.log(i)}
+    />
   );
 }
 
 function Game (){
   // Game state hooks
-  const [squares, setSquare] = useState(Array(9).fill(null)); // init as empty
+  const [squares, setSquares] = useState(Array(9).fill(null)); // init as empty
   const [history, setHistory] = useState(squares);            // history is squares, updated each render
   const [currentState, setCurrentState] = useState(history[history.length-1]);
   const [xIsNext, setXIsNext] = useState(true);               // bool switched on each render
@@ -94,20 +67,20 @@ function Game (){
   const [moves, setMoves] = useState();                       // renders moves in history
 
   // on each render: onClick should be encompassed here
-  useEffect(() => {
-    setHistory(history.concat([{squares: squares}]));
-    setCurrentState(squares);
-    setXIsNext(xIsNext ? true : false);
-    setStepNumber(stepNumber+1);
-    // setMoves(gameHistory.map());
-    const winner = calculateWinner(squares);
-    if (winner){
-      setGameStatus('Winner: ' + winner);
-    }
-    else{
-      setGameStatus('Next player: ' + (xIsNext ? 'X' : 'O'));
-    }
-  });
+  // useEffect(() => {
+  //   setHistory(history.concat([{squares: squares}]));
+  //   setCurrentState(squares);
+  //   setXIsNext(xIsNext ? true : false);
+  //   setStepNumber(stepNumber+1);
+  //   // setMoves(gameHistory.map());
+  //   const winner = calculateWinner(squares);
+  //   if (winner){
+  //     setGameStatus('Winner: ' + winner);
+  //   }
+  //   else{
+  //     setGameStatus('Next player: ' + (xIsNext ? 'X' : 'O'));
+  //   }
+  // });
   
   return (
     <div className="game">
