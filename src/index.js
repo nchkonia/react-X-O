@@ -38,6 +38,7 @@ function Game (){
           setHistory(history.slice(0, stepNumber+1));
           setCurrentState(history[history.length-1]);
           setXIsNext(xIsNext? false : true);
+          setGameStatus(xIsNext? 'O' : 'X');
         }}
       />
     );
@@ -106,7 +107,7 @@ function Game (){
       </div>
       <div className="game-info">
         <div>{gameStatus}</div>
-        <ol>{moves}</ol>
+        {/* <ol>{moves}</ol> */}
       </div>
     </div>
   );
