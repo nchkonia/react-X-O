@@ -32,13 +32,20 @@ function Game (){
         value={squares[i]} 
         // drier of state change
         onClick={() => {
-          let newSquares = squares.slice();
+          const newSquares = squares.slice();
           newSquares[i] = xIsNext ? 'X' : 'O'; //NOTE: may be other way around ...; // hard-coded for now
           setSquares(newSquares);
           setHistory(history.slice(0, stepNumber+1));
           setCurrentState(history[history.length-1]);
           setXIsNext(xIsNext? false : true);
-          setGameStatus(xIsNext? 'O' : 'X');
+
+          const winner = calculateWinner(newSquares);
+          if (winner){
+            setGameStatus('Winner: ' + winner)
+          }
+          else{
+            setGameStatus('Next Player: ' + (xIsNext? 'O' : 'X'));
+          }
         }}
       />
     );
@@ -50,7 +57,7 @@ function Game (){
   const [currentState, setCurrentState] = useState(history[history.length-1]);
   const [xIsNext, setXIsNext] = useState(true);               // bool switched on each render
   const [stepNumber, setStepNumber] = useState(0);            // stepNumber incremented on each render
-  const [gameStatus, setGameStatus] = useState('X')           // recalculated on every render
+  const [gameStatus, setGameStatus] = useState('Next Player: X')           // recalculated on every render
   const [moves, setMoves] = useState();                       // renders moves in history
 
   // on each render: onClick should be encompassed here
@@ -107,7 +114,7 @@ function Game (){
       </div>
       <div className="game-info">
         <div>{gameStatus}</div>
-        {/* <ol>{moves}</ol> */}
+        <ol>{moves}</ol>
       </div>
     </div>
   );
