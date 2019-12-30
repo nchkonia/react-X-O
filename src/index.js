@@ -23,40 +23,17 @@ function Square({value, onClick}) {
   );
 }
 
-// encapsulates squares
-const Board = ({squares}) => {
-  return(
-    <div>
-      <div className="board-row">
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-      </div>
-      <div className="board-row">
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-      </div>
-      <div className="board-row">
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
-      </div>
-    </div>
-    
-  )
-}
 
-const renderSquare = (i) => {
+function Game (){
+  const renderSquare = (i) => {
   return (
     <Square 
-      value={i} 
+      value={squares[i]} 
       onClick={() => console.log(i)}
     />
   );
 }
 
-function Game (){
   // Game state hooks
   const [squares, setSquares] = useState(Array(9).fill(null)); // init as empty
   const [history, setHistory] = useState(squares);            // history is squares, updated each render
@@ -85,10 +62,23 @@ function Game (){
   return (
     <div className="game">
       <div className="game-board"> 
-        <Board
-          squares = {squares}>
-
-        </Board>
+      <div>
+        <div className="board-row">
+          {renderSquare(0)}
+          {renderSquare(1)}
+          {renderSquare(2)}
+        </div>
+        <div className="board-row">
+          {renderSquare(3)}
+          {renderSquare(4)}
+          {renderSquare(5)}
+        </div>
+        <div className="board-row">
+          {renderSquare(6)}
+          {renderSquare(7)}
+          {renderSquare(8)}
+        </div>
+    </div>
         {/* <button 
             className="square"
             onClick={(i) => {
