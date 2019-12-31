@@ -30,7 +30,8 @@ function Game (){
   // history tracking
   const [stepNumber, setStepNumber] = useState(0);            // stepNumber incremented on each render
   const [history, setHistory] = useState([squares]);          // array of arrays
-  
+  const [currentState, setCurrentState] = useState(history[stepNumber]);
+
   // jump to int #step
   const jumpTo = (step) => {
     setStepNumber(step);
@@ -56,7 +57,10 @@ function Game (){
         value={squares[i]}  
         // driver of state change
         onClick={() => {
+          // update if moved back in history
+          setSquares(currentState);
           if (calculateWinner(squares) || squares[i]){
+            console.log('already placed');
             return
           }
           const newSquares = squares.slice();
@@ -65,16 +69,21 @@ function Game (){
           setXIsNext(xIsNext? false : true);
 
           setStepNumber(stepNumber+1);
+          console.log(stepNumber);
           console.log(history);
           setHistory(history.concat([newSquares]));
-
+          setCurrentState(history[stepNumber]);
+          console.log(currentState);
 
           const winner = calculateWinner(newSquares);
           if (winner){
             setGameStatus('Winner: ' + winner)
           }
-          // add condition for draw
+          
           else{
+            if (stepNumber === 10){
+              setGameStatus("Draw");
+            }
             setGameStatus('Next Player: ' + (xIsNext? 'O' : 'X'));
           }
         }}
