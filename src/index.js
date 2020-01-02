@@ -33,10 +33,12 @@ function Game (){
   const [currentSquares, setCurrentSquares] = useState(history[stepNumber]);
 
   // jump to int #step
+  // NOTE: currently this only modifies stepnumber and player turn: board should re-render appropriately 
   const jumpTo = (step) => {
     setStepNumber(step);
     // x is Next on even turns
     setXIsNext((step % 2) === 0);
+    setSquares(history[step]);
   }
 
   const moves = history.map((step, move) => {
