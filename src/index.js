@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
@@ -33,13 +33,22 @@ function Game (){
   const [currentSquares, setCurrentSquares] = useState(history[stepNumber]);
 
   // jump to int #step
-  // NOTE: currently this only modifies stepnumber and player turn: board should re-render appropriately 
   const jumpTo = (step) => {
     setStepNumber(step);
+    // note: same issue as with renderSquare.onClick: only updates on second render
     // x is Next on even turns
-    setXIsNext((step % 2) === 0);
+    console.log(`step: ${step}`);
+    // setXIsNext((step % 2) === 0);
+    console.log(`is x next when jumped? ${xIsNext}`)
     setSquares(history[step]);
+    // setCurrentSquares(squares);
   }
+
+  useEffect(() => {
+    setXIsNext((stepNumber%2) === 0);
+    console.log(`in effect hook, is X next? ${xIsNext}`);
+    // setHistory(history.slice(0,stepNumber));
+  })
 
   const moves = history.map((step, move) => {
     const desc = move ? 
@@ -51,6 +60,8 @@ function Game (){
       </li>
     ); 
   });
+
+
 
   // also updates square state info
   const renderSquare = (i) => {
@@ -85,9 +96,24 @@ function Game (){
           console.log(`stepNumber: ${stepNumber}`);
           console.log(`newStepNumber: ${newStepNumber}`);
           console.log('\n');
+
+
+          // this ONLY adds to history,
+          // const newHistory = history.concat([newSquares]);
+          // const newHistory = (history.slice(0, stepNumber)).concat([newSquares]);
+          let newHistory;
+          // bandaid solution to rewriting history
+          if (newStepNumber < history.length){
+            newHistory = history.slice(0,newStepNumber).concat([newSquares]);
+          }
+          else{
+            newHistory = history.concat([newSquares]);
+          }
           
-          const newHistory = history.concat([newSquares]);
+          // const newHistory = history.slice(0, newStepNumber+1);
+
           setHistory(newHistory);
+
           console.log('history');
           console.log(history)
           console.log('newHistory');
