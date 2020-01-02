@@ -76,14 +76,24 @@ function Game (){
           console.log(`new squares: ${newSquares}`);
           console.log(`squares: ${squares}`);
           console.log(`is x next? ${xIsNext}`);
+          console.log('\n');
 
-          setStepNumber(stepNumber+1);
+          const newStepNumber = stepNumber+1;
+          setStepNumber(newStepNumber);
           console.log(`stepNumber: ${stepNumber}`);
+          console.log(`newStepNumber: ${newStepNumber}`);
+          console.log('\n');
           
-          setHistory(history.concat([newSquares]));
-          console.log(`history: ${history}`);
+          const newHistory = history.concat([newSquares]);
+          setHistory(newHistory);
+          console.log('history');
+          console.log(history)
+          console.log('newHistory');
+          console.log(newHistory);
+          console.log('\n');
+
           
-          setCurrentSquares(history[stepNumber]);
+          setCurrentSquares(newHistory[newStepNumber]);
           console.log(`currentSquares: ${currentSquares}`);
 
           const winner = calculateWinner(newSquares);
@@ -92,7 +102,7 @@ function Game (){
           }
           
           else{
-            if (stepNumber === 10){
+            if (newStepNumber === 10){
               setGameStatus("Draw");
             }
             setGameStatus('Next Player: ' + (xIsNext? 'O' : 'X'));
