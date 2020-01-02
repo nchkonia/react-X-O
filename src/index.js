@@ -102,10 +102,12 @@ function Game (){
           }
           
           else{
-            if (newStepNumber === 10){
+            if (newStepNumber === 9){
               setGameStatus("Draw");
             }
-            setGameStatus('Next Player: ' + (xIsNext? 'O' : 'X'));
+            else{
+              setGameStatus('Next Player: ' + (xIsNext? 'O' : 'X'));
+            }
           }
         }}
       />
