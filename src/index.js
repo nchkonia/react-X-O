@@ -47,6 +47,8 @@ function Game (){
   useEffect(() => {
     setXIsNext((stepNumber%2) === 0);
     console.log(`in effect hook, is X next? ${xIsNext}`);
+    setGameStatus('Next Player: ' + (xIsNext? 'X' : 'O'));
+    
     // setHistory(history.slice(0,stepNumber));
   })
 
