@@ -47,8 +47,21 @@ function Game (){
   useEffect(() => {
     setXIsNext((stepNumber%2) === 0);
     console.log(`in effect hook, is X next? ${xIsNext}`);
-    setGameStatus('Next Player: ' + (xIsNext? 'X' : 'O'));
+    // setGameStatus('Next Player: ' + (xIsNext? 'X' : 'O'));
+    const winner = calculateWinner(squares);
+    if (winner){
+      setGameStatus('Winner: ' + winner)
+    }
     
+    else{
+      if (stepNumber === 9){
+        setGameStatus("Draw");
+      }
+      else{
+        setGameStatus('Next Player: ' + (xIsNext? 'X' : 'O'));
+      }
+    }
+    // NOTE: add calculateWinner logic here, as it is a side-effect of rendering
     // setHistory(history.slice(0,stepNumber));
   })
 
@@ -126,19 +139,19 @@ function Game (){
           setCurrentSquares(newHistory[newStepNumber]);
           console.log(`currentSquares: ${currentSquares}`);
 
-          const winner = calculateWinner(newSquares);
-          if (winner){
-            setGameStatus('Winner: ' + winner)
-          }
+          // const winner = calculateWinner(newSquares);
+          // if (winner){
+          //   setGameStatus('Winner: ' + winner)
+          // }
           
-          else{
-            if (newStepNumber === 9){
-              setGameStatus("Draw");
-            }
-            else{
-              setGameStatus('Next Player: ' + (xIsNext? 'O' : 'X'));
-            }
-          }
+          // else{
+          //   if (newStepNumber === 9){
+          //     setGameStatus("Draw");
+          //   }
+          //   else{
+          //     setGameStatus('Next Player: ' + (xIsNext? 'O' : 'X'));
+          //   }
+          // }
         }}
       />
     );
