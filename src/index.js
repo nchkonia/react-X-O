@@ -57,23 +57,34 @@ function Game (){
         value={squares[i]}  
         // driver of state change
         onClick={() => {
-          // update if moved back in history
+          // update squares when stepped back in history
           setSquares(currentSquares);
+          console.log(`current squares: ${currentSquares}`)
           if (calculateWinner(squares) || squares[i]){
             console.log('already placed');
             return
           }
+
+          // WOW, seems to be CHANGING THE PREVIOUS MOVE TO THE CURRENT PLAYER'S VALUE
           const newSquares = squares.slice();
+          console.log(newSquares[i]);
           newSquares[i] = xIsNext ? 'X' : 'O'; 
+          console.log(newSquares[i]);
+
           setSquares(newSquares);
           setXIsNext(xIsNext? false : true);
+          console.log(`new squares: ${newSquares}`);
+          console.log(`squares: ${squares}`);
+          console.log(`is x next? ${xIsNext}`);
 
           setStepNumber(stepNumber+1);
-          console.log(stepNumber);
+          console.log(`stepNumber: ${stepNumber}`);
+          
           setHistory(history.concat([newSquares]));
-          console.log(history);
+          console.log(`history: ${history}`);
+          
           setCurrentSquares(history[stepNumber]);
-          console.log(currentSquares);
+          console.log(`currentSquares: ${currentSquares}`);
 
           const winner = calculateWinner(newSquares);
           if (winner){
@@ -126,6 +137,7 @@ function Game (){
 // checks values in squares against these combinations
 // to determine a winner, if any
 function calculateWinner(squares){
+  console.log(`squares: ${squares}`);
   const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -140,6 +152,7 @@ function calculateWinner(squares){
     const [a, b, c] = lines[i];
     // if squares[a] exists and any winning combination is found 
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
+        console.log('WINNER')
         return squares[a];
     }
   }
